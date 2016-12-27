@@ -1,0 +1,76 @@
+//--------------------------------------------------
+
+  Autor: Konrad Peschka
+  Fecha: Noviembre 2016
+  Entidad: Kaiwa Technology
+
+//--------------------------------------------------
+
+#define pin_sensor_der A0
+#define pin_sensor_izq A1
+#define pin_pote A2
+
+#define pin_motor_der1 10
+#define pin_motor_der2 11
+#define pin_motor_izq1 5
+#define pin_motor_izq2 6
+
+bool sensor_der = 0;
+bool sensor_izq = 0;
+
+int giro = 100;
+int vel;
+
+void setup()
+{
+  pinMode(pin_sensor_der, INPUT);
+  pinMode(pin_sensor_izq, INPUT);
+
+  pinMode(pin_motor_der1, OUTPUT);
+  pinMode(pin_motor_der2, OUTPUT);
+  pinMode(pin_motor_izq1, OUTPUT);
+  pinMode(pin_motor_izq2, OUTPUT);
+}
+
+void loop()
+{
+  sensor_der = digitalRead(pin_sensor_der);
+  sensor_izq = digitalRead(pin_sensor_izq);
+  vel=analogRead(pin_pote)/4;
+  
+  if ((sensor_der == LOW) && (sensor_izq == LOW))
+  {
+    analogWrite(pin_motor_der1, vel);
+    digitalWrite(pin_motor_der2, LOW);
+    analogWrite(pin_motor_izq1, vel);
+    digitalWrite(pin_motor_izq2, LOW);
+  }
+
+  if ((sensor_der == HIGH) && (sensor_izq == LOW))
+
+  {
+    analogWrite(pin_motor_der1, vel);
+    digitalWrite(pin_motor_der2, LOW);
+    digitalWrite(pin_motor_izq1, LOW);
+    analogWrite(pin_motor_izq2, vel);
+    // delay(giro);
+  }
+  if ((sensor_der == LOW) && (sensor_izq == HIGH))
+  {
+    digitalWrite(pin_motor_der1, LOW);
+    analogWrite(pin_motor_der2, vel);
+    analogWrite(pin_motor_izq1, vel);
+    digitalWrite(pin_motor_izq2, LOW);
+    //delay(giro);
+
+  }
+
+  if ((sensor_der == HIGH) && (sensor_izq == HIGH))
+  {
+    digitalWrite(pin_motor_der1, LOW);
+    digitalWrite(pin_motor_der2, LOW);
+    digitalWrite(pin_motor_izq1, LOW);
+    digitalWrite(pin_motor_izq2, LOW);
+  }
+
+}
